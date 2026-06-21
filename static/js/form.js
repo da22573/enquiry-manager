@@ -7,6 +7,7 @@ const descriptionInput = document.getElementById("description");
 const descriptionCounter = document.getElementById("description-counter");
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_MAX_LENGTH = 254;
 
 function updateDescriptionCounter() {
   const count = descriptionInput.value.length;
@@ -81,7 +82,7 @@ function validateForm(formData) {
 
   if (!email) {
     errors.email = "Email address is required.";
-  } else if (!emailPattern.test(email)) {
+  } else if (email.length > EMAIL_MAX_LENGTH || !emailPattern.test(email)) {
     errors.email = "Enter a valid email address.";
   }
 
@@ -169,15 +170,18 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+function errorFieldName(inputId) {
+  if (inputId === "phoneNational" || inputId === "phoneCountry") {
+    return "phone";
+  }
+  return inputId;
+}
+
 ["fullName", "email", "phoneNational", "phoneCountry", "service", "description"].forEach((fieldName) => {
   const input = document.getElementById(fieldName);
-  input.addEventListener("input", () => setFieldError("phone", ""));
-  input.addEventListener("change", () => setFieldError("phone", ""));
-});
-
-["fullName", "email", "service", "description"].forEach((fieldName) => {
-  const input = document.getElementById(fieldName);
-  input.addEventListener("input", () => setFieldError(fieldName, ""));
+  const errorField = errorFieldName(fieldName);
+  input.addEventListener("input", () => setFieldError(errorField, ""));
+  input.addEventListener("change", () => setFieldError(errorField, ""));
 });
 
 descriptionInput.addEventListener("input", updateDescriptionCounter);

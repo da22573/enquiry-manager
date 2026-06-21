@@ -42,6 +42,9 @@ async function loadEnquiries() {
   try {
     const query = buildQueryString();
     const response = await fetch(`/api/enquiries${query ? `?${query}` : ""}`);
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
     enquiries = await response.json();
     renderTable();
   } catch (error) {

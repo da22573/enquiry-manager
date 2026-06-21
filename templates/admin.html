@@ -20,7 +20,7 @@
     <main class="page">
       <section class="card">
         <h1 class="page-title">Enquiry admin</h1>
-        <p class="lead">Review incoming client enquiries and update their status.</p>
+        <p class="lead">Review incoming client enquiries and update their status</p>
 
         <div class="filters" aria-label="Filter enquiries">
           <div class="field">
@@ -82,9 +82,6 @@
       </div>
     </dialog>
 
-    <script>
-      window.ENQUIRY_STATUSES = {{ statuses | tojson }};
-    </script>
     <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
   </body>
 </html>

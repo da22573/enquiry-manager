@@ -39,9 +39,20 @@ def test_validate_enquiry_rejects_invalid_email():
     assert errors["email"] == "Enter a valid email address."
 
 
+def test_validate_enquiry_rejects_long_email():
+    errors = validate_enquiry(
+        {
+            "fullName": "Alex Smith",
+            "email": f"{'a' * 250}@example.com",
+            "service": "Finance",
+            "description": "Need help with quarterly planning.",
+        }
+    )
+    assert errors["email"] == "Enter a valid email address."
+
+
 def test_create_enquiry_persists_record(client):
-    test_client = client
-    response = test_client.post(
+    response = client.post(
         "/api/enquiries",
         json={
             "fullName": "Alex Smith",
@@ -80,8 +91,7 @@ def test_validate_enquiry_rejects_invalid_phone():
 
 
 def test_create_enquiry_rejects_invalid_phone(client):
-    test_client = client
-    response = test_client.post(
+    response = client.post(
         "/api/enquiries",
         json={
             "fullName": "Alex Smith",
@@ -98,8 +108,7 @@ def test_create_enquiry_rejects_invalid_phone(client):
 
 
 def test_update_enquiry_status(client):
-    test_client = client
-    create_response = test_client.post(
+    create_response = client.post(
         "/api/enquiries",
         json={
             "fullName": "Alex Smith",
@@ -110,7 +119,7 @@ def test_update_enquiry_status(client):
     )
     enquiry_id = create_response.get_json()["enquiry"]["id"]
 
-    patch_response = test_client.patch(
+    patch_response = client.patch(
         f"/api/enquiries/{enquiry_id}",
         json={"status": "reviewed"},
     )
@@ -120,9 +129,7 @@ def test_update_enquiry_status(client):
 
 
 def test_list_enquiries_filters_by_status_and_service(client):
-    test_client = client
-
-    test_client.post(
+    client.post(
         "/api/enquiries",
         json={
             "fullName": "Alex Smith",
@@ -131,7 +138,7 @@ def test_list_enquiries_filters_by_status_and_service(client):
             "description": "Need help with quarterly planning.",
         },
     )
-    test_client.post(
+    client.post(
         "/api/enquiries",
         json={
             "fullName": "Jordan Lee",
@@ -141,13 +148,13 @@ def test_list_enquiries_filters_by_status_and_service(client):
         },
     )
 
-    finance_response = test_client.get("/api/enquiries?service=Finance")
+    finance_response = client.get("/api/enquiries?service=Finance")
     assert finance_response.status_code == 200
     finance_results = finance_response.get_json()
     assert len(finance_results) == 1
     assert finance_results[0]["fullName"] == "Alex Smith"
 
-    search_response = test_client.get("/api/enquiries?q=jordan")
+    search_response = client.get("/api/enquiries?q=jordan")
     assert search_response.status_code == 200
     search_results = search_response.get_json()
     assert len(search_results) == 1

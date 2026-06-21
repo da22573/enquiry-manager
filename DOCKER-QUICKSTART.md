@@ -1,80 +1,47 @@
-# Enquiry Manager — Docker quick start
+# Docker quick start
 
-Run the app in a container without installing Python locally.
+For running this app on any machine. You only need Docker — no Python install.
 
-## Prerequisites
+## 1. Get the code
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or Docker Engine + Compose)
-
-## Run (single command)
-
-1. Unzip `enquiry-manager.zip`
-2. Open a terminal in the `enquiry-manager` folder
-3. Start the app:
+**From GitHub:**
 
 ```bash
-cd path/to/enquiry-manager
+git clone https://github.com/da22573/enquiry-manager.git
+cd enquiry-manager
+```
+
+**Or from a ZIP:** unzip the folder, then open a terminal inside `enquiry-manager`.
+
+## 2. Install Docker
+
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and make sure it is running.
+
+## 3. Start the app
+
+```bash
 docker compose up --build
 ```
 
-Or use any of these equivalents:
+Wait until the terminal shows something like `Running on http://127.0.0.1:5000`.
 
-```bash
-make run
-./run
-```
+## 4. Open the app in a browser
 
-4. Open in a browser:
+Open **any web browser** on the same computer (Chrome, Safari, Firefox, Edge, etc.).
 
-- Enquiry form: http://127.0.0.1:5000/
-- Admin view: http://127.0.0.1:5000/admin
+Type or paste one of these addresses into the **address bar**:
 
-The SQLite database is stored in `data/enquiries.db` on your machine via a volume mount, so enquiries persist between container restarts.
+| Page | Address |
+|------|---------|
+| Enquiry form | http://127.0.0.1:5000/ |
+| Admin view | http://127.0.0.1:5000/admin |
 
-## Stop the container
+You do not need to install anything else — Docker keeps the server running in the terminal while you use the browser.
+
+## 5. Stop
 
 Press **Ctrl + C** in the terminal, then:
 
 ```bash
 docker compose down
 ```
-
-## Run in the background (optional)
-
-```bash
-docker compose up --build -d
-docker compose logs -f    # follow logs; Ctrl + C to stop tailing
-docker compose down       # stop and remove the container
-```
-
-## Pull from GitHub Container Registry
-
-Images are published to GHCR on every push to `master`:
-
-`ghcr.io/da22573/enquiry-manager:latest`
-
-### Run the published image
-
-```bash
-mkdir -p data
-docker pull ghcr.io/da22573/enquiry-manager:latest
-docker run --rm -p 5000:5000 -v "$(pwd)/data:/app/data" ghcr.io/da22573/enquiry-manager:latest
-```
-
-Open http://127.0.0.1:5000/ and http://127.0.0.1:5000/admin as above.
-
-### Make the package public (first time only)
-
-By default, GHCR packages are private. To let others pull without logging in:
-
-1. Open https://github.com/da22573/enquiry-manager/pkgs/container/enquiry-manager
-2. **Package settings** → **Change visibility** → **Public**
-
-To pull a private package, log in first:
-
-```bash
-echo "$GITHUB_TOKEN" | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin
-docker pull ghcr.io/da22573/enquiry-manager:latest
-```
-
-Use a [Personal Access Token](https://github.com/settings/tokens) with `read:packages` scope.

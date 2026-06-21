@@ -6,14 +6,11 @@ import os
 import re
 import uuid
 from datetime import datetime, timezone
-from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
 
 from db import fetch_enquiries, init_db, insert_enquiry, update_enquiry_status
 from phone_utils import PHONE_COUNTRIES, normalize_phone
-
-APP_ROOT = Path(__file__).resolve().parent
 
 SERVICES = [
     "Strategy & Planning",
@@ -24,6 +21,7 @@ SERVICES = [
 
 STATUSES = ["new", "reviewed"]
 
+EMAIL_MAX_LENGTH = 254
 EMAIL_PATTERN = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
 
@@ -112,7 +110,7 @@ def validate_enquiry(payload: dict) -> dict[str, str]:
 
     if not email:
         errors["email"] = "Email address is required."
-    elif not EMAIL_PATTERN.match(email):
+    elif len(email) > EMAIL_MAX_LENGTH or not EMAIL_PATTERN.match(email):
         errors["email"] = "Enter a valid email address."
 
     if not service:
@@ -135,5 +133,5 @@ app = create_app()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    debug = os.environ.get("FLASK_DEBUG", "true").lower() == "true"
+    debug = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
     app.run(debug=debug, host="0.0.0.0", port=port)
