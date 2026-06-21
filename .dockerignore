@@ -3,8 +3,13 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .git/
+.github/
 .gitignore
 .DS_Store
 *.md
 !README.md
 data/*.db
+tests/
+pytest.ini
+Makefile
+run

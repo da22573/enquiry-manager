@@ -6,15 +6,22 @@ Run the app in a container without installing Python locally.
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or Docker Engine + Compose)
 
-## Steps
+## Run (single command)
 
 1. Unzip `enquiry-manager.zip`
 2. Open a terminal in the `enquiry-manager` folder
-3. Build and start the container:
+3. Start the app:
 
 ```bash
 cd path/to/enquiry-manager
 docker compose up --build
+```
+
+Or use any of these equivalents:
+
+```bash
+make run
+./run
 ```
 
 4. Open in a browser:

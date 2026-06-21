@@ -22,13 +22,34 @@ A lightweight internal web tool for submitting and managing client enquiries. Bu
 | Tests | pytest | Unit and API tests for validation and endpoints |
 | Docker | Dockerfile + Compose | One-command setup for reviewers |
 
-## Prerequisites
+## Quick start (Docker)
+
+Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or Docker Engine + Compose). No Python install needed.
+
+From the project folder, run **one command**:
+
+```bash
+docker compose up --build
+```
+
+Alternatives: `make run` or `./run`
+
+Then open:
+
+- Enquiry form: http://127.0.0.1:5000/
+- Admin view: http://127.0.0.1:5000/admin
+
+The SQLite database is stored in `data/enquiries.db` on your machine, so enquiries persist between container restarts.
+
+Stop with **Ctrl + C**, then `docker compose down`. More detail: [DOCKER-QUICKSTART.md](DOCKER-QUICKSTART.md).
+
+## Set-up (local Python)
+
+**Prerequisites:**
 
 - **Python 3.9+** — download from [python.org](https://www.python.org/downloads/) if not already installed
 - **pip** — included with Python
 - **Internet** — required when first loading the enquiry form (phone validation library is loaded from a CDN in the browser). Backend runs offline after `pip install`.
-
-## Set-up
 
 1. Unzip `enquiry-manager.zip`
 2. Open a terminal in the `enquiry-manager` folder
@@ -48,8 +69,6 @@ python app.py
 - Admin view: http://127.0.0.1:5000/admin
 
 Stop the server with **Ctrl + C** in the terminal.
-
-**Docker:** see [DOCKER-QUICKSTART.md](DOCKER-QUICKSTART.md) for a one-command container setup (no Python install required).
 
 ### Windows notes
 
@@ -110,8 +129,10 @@ enquiry-manager/
 ├── requirements.txt       # Python dependencies
 ├── pytest.ini             # Test configuration
 ├── Dockerfile             # Container image definition
-├── docker-compose.yml     # Local Docker setup
+├── docker-compose.yml     # One-command local Docker setup
 ├── DOCKER-QUICKSTART.md   # Docker quick start guide
+├── Makefile               # `make run` → docker compose up --build
+├── run                    # `./run` → docker compose up --build
 ├── data/
 │   └── enquiries.db       # Created automatically on first run
 ├── static/
