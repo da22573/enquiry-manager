@@ -1,46 +1,96 @@
 # Docker quick start
 
-For running this app on any machine. You only need Docker — no Python install.
+Run the app on any machine with [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running. No Python required.
 
-## 1. Get the code
+Pick **one** option below.
 
-**From GitHub:**
+---
 
-```bash
-git clone https://github.com/da22573/enquiry-manager.git
-cd enquiry-manager
-```
+## Option A — Pull the published image (no repo needed)
 
-**Or from a ZIP:** unzip the folder, then open a terminal inside `enquiry-manager`.
+Use this if you only have the GitHub Container Registry image.
 
-## 2. Install Docker
+**Image:** `ghcr.io/da22573/enquiry-manager:latest`
 
-Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and make sure it is running.
+### 1. Pull and run
 
-## 3. Start the app
+**Mac / Linux:**
 
 ```bash
-docker compose up --build
+mkdir -p data
+docker pull ghcr.io/da22573/enquiry-manager:latest
+docker run --rm -p 5000:5000 -v "$(pwd)/data:/app/data" ghcr.io/da22573/enquiry-manager:latest
 ```
 
-Wait until the terminal shows something like `Running on http://127.0.0.1:5000`.
+**Windows (PowerShell):**
 
-## 4. Open the app in a browser
+```powershell
+mkdir data
+docker pull ghcr.io/da22573/enquiry-manager:latest
+docker run --rm -p 5000:5000 -v "${PWD}/data:/app/data" ghcr.io/da22573/enquiry-manager:latest
+```
 
-Open **any web browser** on the same computer (Chrome, Safari, Firefox, Edge, etc.).
+Wait until the terminal shows `Running on http://127.0.0.1:5000`.
 
-Type or paste one of these addresses into the **address bar**:
+> **Do not run `docker compose up` here** — that command needs the project folder and `docker-compose.yml`. Use `docker run` above instead.
+
+### 2. Open in a browser
+
+On the **same computer**, open any browser and go to:
 
 | Page | Address |
 |------|---------|
 | Enquiry form | http://127.0.0.1:5000/ |
 | Admin view | http://127.0.0.1:5000/admin |
 
-You do not need to install anything else — Docker keeps the server running in the terminal while you use the browser.
+### 3. Stop
 
-## 5. Stop
+Press **Ctrl + C** in the terminal.
 
-Press **Ctrl + C** in the terminal, then:
+### If pull fails (private package)
+
+Log in to GitHub Container Registry first:
+
+```bash
+echo YOUR_GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin
+docker pull ghcr.io/da22573/enquiry-manager:latest
+```
+
+Or make the package **public**: GitHub → Packages → enquiry-manager → Package settings → Change visibility.
+
+---
+
+## Option B — Clone the repo and use Compose
+
+Use this if you have the full project folder (clone or ZIP).
+
+### 1. Get the code
+
+```bash
+git clone https://github.com/da22573/enquiry-manager.git
+cd enquiry-manager
+```
+
+Or unzip `enquiry-manager.zip` and open a terminal inside the folder.
+
+### 2. Start the app
+
+```bash
+docker compose up --build
+```
+
+Wait until the terminal shows `Running on http://127.0.0.1:5000`.
+
+### 3. Open in a browser
+
+| Page | Address |
+|------|---------|
+| Enquiry form | http://127.0.0.1:5000/ |
+| Admin view | http://127.0.0.1:5000/admin |
+
+### 4. Stop
+
+Press **Ctrl + C**, then:
 
 ```bash
 docker compose down

@@ -12,32 +12,54 @@ Internal web tool for submitting and reviewing client enquiries. Built for a gra
 
 ## Run it
 
-### Get the code
+Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Docker path) or **Python 3.9+** (without Docker).
 
-**From GitHub:**
+Full Docker steps: [DOCKER-QUICKSTART.md](DOCKER-QUICKSTART.md)
+
+### Option 1 — Docker image from GitHub Container Registry
+
+No repo clone needed. Pull the published image and run it:
+
+**Mac / Linux:**
+
+```bash
+mkdir -p data
+docker pull ghcr.io/da22573/enquiry-manager:latest
+docker run --rm -p 5000:5000 -v "$(pwd)/data:/app/data" ghcr.io/da22573/enquiry-manager:latest
+```
+
+**Windows (PowerShell):**
+
+```powershell
+mkdir data
+docker pull ghcr.io/da22573/enquiry-manager:latest
+docker run --rm -p 5000:5000 -v "${PWD}/data:/app/data" ghcr.io/da22573/enquiry-manager:latest
+```
+
+Use **`docker run`**, not `docker compose up` — Compose needs the project files.
+
+### Option 2 — Docker from source (clone + Compose)
+
+**Get the code:**
 
 ```bash
 git clone https://github.com/da22573/enquiry-manager.git
 cd enquiry-manager
 ```
 
-**Or from a ZIP:** unzip the folder, then open a terminal inside `enquiry-manager`.
+Or unzip the project folder and open a terminal inside it.
 
-### With Docker (recommended)
-
-Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/). More detail: [DOCKER-QUICKSTART.md](DOCKER-QUICKSTART.md)
+**Start the app:**
 
 ```bash
 docker compose up --build
 ```
 
-Then open http://127.0.0.1:5000/ and http://127.0.0.1:5000/admin in any browser.
-
 Stop with **Ctrl + C**, then `docker compose down`.
 
-### Without Docker
+### Option 3 — Without Docker
 
-Requires Python 3.9+.
+**Get the code** (clone or unzip as above), then:
 
 ```bash
 python3 -m venv .venv
@@ -46,9 +68,20 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Same URLs as above. Stop with **Ctrl + C**.
+Stop with **Ctrl + C**.
+
+### Open the app
+
+Once the server is running, open **any browser on the same machine**:
+
+- Enquiry form: http://127.0.0.1:5000/
+- Admin view: http://127.0.0.1:5000/admin
+
+Leave the terminal open while you use the app.
 
 ## Tests
+
+From the project folder, with dependencies installed:
 
 ```bash
 pytest
@@ -82,3 +115,5 @@ Built with assistance from Cursor AI (scaffolding, boilerplate, validation patte
 ## Repo
 
 https://github.com/da22573/enquiry-manager
+
+**Published image:** `ghcr.io/da22573/enquiry-manager:latest`
