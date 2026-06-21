@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit an enquiry</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="brand" href="/">Enquiry Manager</a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/" aria-current="page">Submit enquiry</a>
+          <a href="/admin">Admin view</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="card">
+        <h1 class="page-title">Submit a client enquiry</h1>
+        <p class="lead">
+          Share a few details and our admin team will follow up
+        </p>
+
+        <div id="form-feedback" role="status" aria-live="polite" tabindex="-1"></div>
+
+        <form id="enquiry-form" novalidate>
+          <div class="form-grid">
+            <div class="field" data-field="fullName">
+              <label for="fullName">Full name *</label>
+              <input id="fullName" name="fullName" type="text" autocomplete="name" required maxlength="100" />
+              <p class="field-error" id="error-fullName" hidden></p>
+            </div>
+
+            <div class="field" data-field="email">
+              <label for="email">Email address *</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+              <p class="field-error" id="error-email" hidden></p>
+            </div>
+
+            <div class="field" data-field="phone">
+              <label for="phoneNational">Phone number</label>
+              <div class="phone-input">
+                <select id="phoneCountry" name="phoneCountry" aria-label="Country code">
+                  {% for country in phone_countries %}
+                  <option value="{{ country.region }}" {% if country.region == 'GB' %}selected{% endif %}>
+                    {{ country.name }} ({{ country.dial_code }})
+                  </option>
+                  {% endfor %}
+                </select>
+                <input
+                  id="phoneNational"
+                  name="phoneNational"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel-national"
+                  placeholder="7123 456 789"
+                />
+              </div>
+              <p class="field-error" id="error-phone" hidden></p>
+            </div>
+
+            <div class="field" data-field="service">
+              <label for="service">Service of interest *</label>
+              <select id="service" name="service" required>
+                <option value="">Select a service</option>
+                {% for service in services %}
+                <option value="{{ service }}">{{ service }}</option>
+                {% endfor %}
+              </select>
+              <p class="field-error" id="error-service" hidden></p>
+            </div>
+
+            <div class="field" data-field="description">
+              <label for="description">Brief description *</label>
+              <textarea
+                id="description"
+                name="description"
+                required
+                minlength="10"
+                maxlength="1000"
+                aria-describedby="description-counter"
+              ></textarea>
+              <p class="field-hint" id="description-counter" aria-live="polite">0 / 1000</p>
+              <p class="field-error" id="error-description" hidden></p>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="button button--primary" type="submit" id="submit-button">Submit enquiry</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="{{ url_for('static', filename='js/form.js') }}"></script>
+  </body>
+</html>

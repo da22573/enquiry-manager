@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin enquiries</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="brand" href="/">Enquiry Manager</a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/">Submit enquiry</a>
+          <a href="/admin" aria-current="page">Admin view</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="card">
+        <h1 class="page-title">Enquiry admin</h1>
+        <p class="lead">Review incoming client enquiries and update their status.</p>
+
+        <div class="filters" aria-label="Filter enquiries">
+          <div class="field">
+            <label for="filter-search">Search</label>
+            <input id="filter-search" type="search" placeholder="Name, email, service..." />
+          </div>
+
+          <div class="field">
+            <label for="filter-service">Service</label>
+            <select id="filter-service">
+              <option value="">All services</option>
+              {% for service in services %}
+              <option value="{{ service }}">{{ service }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="filter-status">Status</label>
+            <select id="filter-status">
+              <option value="">All statuses</option>
+              {% for status in statuses %}
+              <option value="{{ status }}">{{ status }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div id="admin-feedback" role="status" aria-live="polite"></div>
+
+        <div class="table-wrap">
+          <table class="admin-table" aria-describedby="enquiry-count">
+            <caption class="sr-only">Submitted enquiries</caption>
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Service</th>
+                <th scope="col">Submitted</th>
+                <th scope="col">Status</th>
+                <th scope="col">Details</th>
+              </tr>
+            </thead>
+            <tbody id="enquiry-rows"></tbody>
+          </table>
+        </div>
+
+        <p id="enquiry-count" class="empty-state">Loading enquiries...</p>
+      </section>
+    </main>
+
+    <dialog class="modal" id="detail-modal" aria-labelledby="detail-title">
+      <div class="modal__content">
+        <div class="modal__header">
+          <h2 class="modal__title" id="detail-title">Enquiry details</h2>
+          <button class="button button--secondary" type="button" id="close-modal">Close</button>
+        </div>
+        <dl class="detail-list" id="detail-content"></dl>
+      </div>
+    </dialog>
+
+    <script>
+      window.ENQUIRY_STATUSES = {{ statuses | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
+  </body>
+</html>
